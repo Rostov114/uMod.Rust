@@ -2118,7 +2118,7 @@
               {
                 "OpCode": "call",
                 "OpType": "Method",
-                "Operand": "Facepunch.Steamworks.Win64|Steamworks.SteamServer|get_GameTags"
+                "Operand": "Facepunch.Steamworks.Posix64|Steamworks.SteamServer|get_GameTags"
               },
               {
                 "OpCode": "ldstr",
@@ -2133,7 +2133,7 @@
               {
                 "OpCode": "call",
                 "OpType": "Method",
-                "Operand": "Facepunch.Steamworks.Win64|Steamworks.SteamServer|set_GameTags"
+                "Operand": "Facepunch.Steamworks.Posix64|Steamworks.SteamServer|set_GameTags"
               },
               {
                 "OpCode": "call",
@@ -2163,7 +2163,7 @@
               {
                 "OpCode": "call",
                 "OpType": "Method",
-                "Operand": "Facepunch.Steamworks.Win64|Steamworks.SteamServer|get_GameTags"
+                "Operand": "Facepunch.Steamworks.Posix64|Steamworks.SteamServer|get_GameTags"
               },
               {
                 "OpCode": "ldstr",
@@ -2178,7 +2178,7 @@
               {
                 "OpCode": "call",
                 "OpType": "Method",
-                "Operand": "Facepunch.Steamworks.Win64|Steamworks.SteamServer|set_GameTags"
+                "Operand": "Facepunch.Steamworks.Posix64|Steamworks.SteamServer|set_GameTags"
               }
             ],
             "HookTypeName": "Modify",
@@ -6827,7 +6827,7 @@
               {
                 "OpCode": "callvirt",
                 "OpType": "Method",
-                "Operand": "Facepunch.Steamworks.Win64|Steamworks.SteamServer|SetKey"
+                "Operand": "Facepunch.Steamworks.Posix64|Steamworks.SteamServer|SetKey"
               }
             ],
             "HookTypeName": "Modify",
@@ -7531,14 +7531,14 @@
             "HookName": "ConsoleEnableWinOnly [patch]",
             "AssemblyName": "Assembly-CSharp.dll",
             "TypeName": "ServerConsole",
-            "Flagged": false,
+            "Flagged": true,
             "Signature": {
               "Exposure": 2,
               "Name": "OnEnable",
               "ReturnType": "System.Void",
               "Parameters": []
             },
-            "MSILHash": "FiSe0dzBG4Gojuwy6thYkYL70dXLZcns6fH3a7zyjb4=",
+            "MSILHash": "+u2GCtSHTDWu7iqcjcFKh98FNKhbrQfPRx+LI73xrGk=",
             "BaseHookName": null,
             "HookCategory": "_Patches"
           }
@@ -7580,7 +7580,7 @@
             "HookName": "ConsoleHandleLogWinOnly [patch]",
             "AssemblyName": "Assembly-CSharp.dll",
             "TypeName": "ServerConsole",
-            "Flagged": false,
+            "Flagged": true,
             "Signature": {
               "Exposure": 0,
               "Name": "HandleLog",
@@ -7591,7 +7591,7 @@
                 "UnityEngine.LogType"
               ]
             },
-            "MSILHash": "kgtD5ffonym/f+Zj8bJzE5DdXLcFDUVuEFzVLJFOY1g=",
+            "MSILHash": "8/bib2ZpuLbSJyiCzKEcSJ/FQCNSjFV0egy3mcakzNk=",
             "BaseHookName": null,
             "HookCategory": "_Patches"
           }
@@ -7633,14 +7633,14 @@
             "HookName": "ConsoleDisableWinOnly [patch]",
             "AssemblyName": "Assembly-CSharp.dll",
             "TypeName": "ServerConsole",
-            "Flagged": false,
+            "Flagged": true,
             "Signature": {
               "Exposure": 0,
               "Name": "OnDisable",
               "ReturnType": "System.Void",
               "Parameters": []
             },
-            "MSILHash": "qH0Fx4ZpZ52rsWOYB9nD/cxYExr6N+/oLjCJei6InME=",
+            "MSILHash": "IvK8Qw8Jchw3jkJcqYl/YonrbVvEJaiW/NHjpJYLZ24=",
             "BaseHookName": null,
             "HookCategory": "_Patches"
           }
@@ -7682,7 +7682,7 @@
             "HookName": "ConsolePrintWinOnly [patch]",
             "AssemblyName": "Assembly-CSharp.dll",
             "TypeName": "ServerConsole",
-            "Flagged": false,
+            "Flagged": true,
             "Signature": {
               "Exposure": 2,
               "Name": "PrintColoured",
@@ -7691,7 +7691,7 @@
                 "System.Object[]"
               ]
             },
-            "MSILHash": "UI86dHyItG7auqsoY9Zk936ttdcLX2uvBUQ95+KCkEw=",
+            "MSILHash": "+u2GCtSHTDWu7iqcjcFKh98FNKhbrQfPRx+LI73xrGk=",
             "BaseHookName": null,
             "HookCategory": "_Patches"
           }
@@ -7733,14 +7733,14 @@
             "HookName": "ConsoleInitWinOnly [patch]",
             "AssemblyName": "Assembly-CSharp.dll",
             "TypeName": "ServerConsole",
-            "Flagged": false,
+            "Flagged": true,
             "Signature": {
               "Exposure": 2,
               "Name": ".ctor",
               "ReturnType": "System.Void",
               "Parameters": []
             },
-            "MSILHash": "hMvSQJ3+3AqlZGiCx6FXHBprcWPcosm5l7BPHVidsBw=",
+            "MSILHash": "/1bjMGwIXsfJb0qW+PmBYELFLNeJQ6QFynqqKdvKz9o=",
             "BaseHookName": null,
             "HookCategory": "_Patches"
           }
@@ -7782,7 +7782,7 @@
             "HookName": "ConsoleUpdateWinOnly [patch]",
             "AssemblyName": "Assembly-CSharp.dll",
             "TypeName": "ServerConsole",
-            "Flagged": false,
+            "Flagged": true,
             "Signature": {
               "Exposure": 0,
               "Name": "Update",
