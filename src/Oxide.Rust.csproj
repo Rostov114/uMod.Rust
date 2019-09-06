@@ -43,11 +43,8 @@
     <Reference Include="Facepunch.Rcon">
       <HintPath>Dependencies\Patched\$(SteamBranch)\$(ManagedDir)\Facepunch.Rcon.dll</HintPath>
     </Reference>
-    <Reference Condition="'$(OS)' == 'Unix'" Include="Facepunch.Steamworks.Posix64">
+    <Reference Include="Facepunch.Steamworks.Posix64">
       <HintPath>Dependencies\Patched\$(SteamBranch)\$(ManagedDir)\Facepunch.Steamworks.Posix64.dll</HintPath>
-    </Reference>
-    <Reference Condition="'$(OS)' == 'Windows_NT'" Include="Facepunch.Steamworks.Win64">
-      <HintPath>Dependencies\Patched\$(SteamBranch)\$(ManagedDir)\Facepunch.Steamworks.Win64.dll</HintPath>
     </Reference>
     <Reference Include="Facepunch.System">
       <HintPath>Dependencies\Patched\$(SteamBranch)\$(ManagedDir)\Facepunch.System.dll</HintPath>
