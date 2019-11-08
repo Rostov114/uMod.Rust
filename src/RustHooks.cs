@@ -3,9 +3,9 @@ using Oxide.Core;
 using Oxide.Core.Configuration;
 using Oxide.Core.Libraries.Covalence;
 using Oxide.Core.Plugins;
-using Oxide.Core.RemoteConsole;
 using Rust.Ai;
 using Rust.Ai.HTN;
+using Steamworks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -28,26 +28,22 @@ namespace Oxide.Game.Rust
         /// Called when a remote console command is received
         /// </summary>
         /// <returns></returns>
-        /// <param name="sender"></param>
+        /// <param name="ipAddress"></param>
         /// <param name="command"></param>
         [HookMethod("IOnRconCommand")]
-        private object IOnRconCommand(IPEndPoint sender, string command)
+        private object IOnRconCommand(IPAddress ipAddress, string command)
         {
-            if (sender != null && !string.IsNullOrEmpty(command))
+            if (ipAddress != null && !string.IsNullOrEmpty(command))
             {
-                RemoteMessage message = RemoteMessage.GetMessage(command);
-                if (!string.IsNullOrEmpty(message?.Message))
+                string[] fullCommand = CommandLine.Split(command);
+                if (fullCommand.Length >= 1)
                 {
-                    string[] fullCommand = CommandLine.Split(message.Message);
-                    if (fullCommand.Length >= 1)
-                    {
-                        string cmd = fullCommand[0].ToLower();
-                        string[] args = fullCommand.Skip(1).ToArray();
+                    string cmd = fullCommand[0].ToLower();
+                    string[] args = fullCommand.Skip(1).ToArray();
 
-                        if (Interface.CallHook("OnRconCommand", sender, cmd, args) != null)
-                        {
-                            return true;
-                        }
+                    if (Interface.CallHook("OnRconCommand", ipAddress, cmd, args) != null)
+                    {
+                        return true;
                     }
                 }
             }
@@ -95,10 +91,34 @@ namespace Oxide.Game.Rust
         {
             if (arg == null || arg.Connection != null && arg.Player() == null)
             {
-                return true; // Ingore console commands from client during connection
+                return true; // Ignore console commands from client during connection
             }
 
             return arg.cmd.FullName != "chat.say" ? Interface.CallHook("OnServerCommand", arg) : null;
+        }
+
+        /// <summary>
+        /// Called when the server is updating Steam information
+        /// </summary>
+        [HookMethod("IOnUpdateServerInformation")]
+        private void IOnUpdateServerInformation()
+        {
+            // Add Steam tags for Oxide
+            SteamServer.GameTags += ",oxide";
+            if (Interface.Oxide.Config.Options.Modded)
+            {
+                SteamServer.GameTags += ",modded";
+            }
+        }
+
+        /// <summary>
+        /// Called when the server description is updating
+        /// </summary>
+        [HookMethod("IOnUpdateServerDescription")]
+        private void IOnUpdateServerDescription()
+        {
+            // Fix for server description not always updating
+            SteamServer.SetKey("description_0", string.Empty);
         }
 
         #endregion Server Hooks
@@ -115,7 +135,7 @@ namespace Oxide.Game.Rust
         private object ICanPickupEntity(BasePlayer player, DoorCloser entity)
         {
             object callHook = Interface.CallHook("CanPickupEntity", player, entity);
-            return callHook is bool result && result ? (object)true : null;
+            return callHook is bool result && !result ? (object)true : null;
         }
 
         /// <summary>
@@ -275,8 +295,8 @@ namespace Oxide.Game.Rust
         [HookMethod("IOnPlayerChat")]
         private object IOnPlayerChat(ConsoleSystem.Arg arg, string message)
         {
-            // Store escaped message
-            arg.Args[0] = message.EscapeRichText();
+            // Updated arg message
+            arg.Args[1] = message.EscapeRichText();
 
             // Get player objects
             BasePlayer player = arg.Connection.player as BasePlayer;
@@ -300,7 +320,7 @@ namespace Oxide.Game.Rust
         [HookMethod("IOnPlayerCommand")]
         private void IOnPlayerCommand(ConsoleSystem.Arg arg)
         {
-            string str = arg.GetString(0).Trim();
+            string str = arg.GetString(1).Replace("\n", "").Replace("\r", "").Trim();
 
             // Check if it is a chat command
             if (string.IsNullOrEmpty(str) || str[0] != '/' || str.Length <= 1)
@@ -386,6 +406,22 @@ namespace Oxide.Game.Rust
             {
                 player.IPlayer = iplayer;
                 Interface.CallHook("OnUserConnected", iplayer);
+            }
+        }
+
+        /// <summary>
+        /// Called when setting/changing info values for a player
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="key"></param>
+        /// <param name="val"></param>
+        [HookMethod("OnPlayerSetInfo")]
+        private void OnPlayerSetInfo(Connection connection, string key, string val)
+        {
+            // Change language for player
+            if (key == "global.language")
+            {
+                lang.SetLanguage(val, connection.userid.ToString());
             }
         }
 
@@ -587,5 +623,26 @@ namespace Oxide.Game.Rust
         }
 
         #endregion Item Hooks
+
+        #region Deprecated Hooks
+
+        [HookMethod("IOnActiveItemChange")]
+        private object IOnActiveItemChange(BasePlayer player, Item oldItem, uint newItemId)
+        {
+            object newHook = Interface.Oxide.CallHook("OnActiveItemChange", player, oldItem, newItemId);
+            object oldHook = Interface.Oxide.CallDeprecatedHook("OnActiveItemChange", $"OnActiveItemChange(BasePlayer player, Item oldItem, uint newItemId)",
+                new System.DateTime(2020, 1, 1), player, newItemId);
+            return newHook ?? oldHook;
+        }
+
+        [HookMethod("IOnActiveItemChanged")]
+        private void IOnActiveItemChanged(BasePlayer player, Item oldItem, Item newItem)
+        {
+            Interface.Oxide.CallHook("OnActiveItemChanged", player, oldItem, newItem);
+            Interface.Oxide.CallDeprecatedHook("OnPlayerActiveItemChanged", $"OnActiveItemChanged(BasePlayer player, Item oldItem, Item newItem)",
+                new System.DateTime(2020, 1, 1), player, oldItem, newItem);
+        }
+
+        #endregion Deprecated Hooks
     }
 }
